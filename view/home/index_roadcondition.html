@@ -1,0 +1,94 @@
+{% extends "./inc/base.html" %}
+
+{% block style %}
+<!--自定义样式-->
+<link href="http://api.map.baidu.com/library/TrafficControl/1.2/src/TrafficControl_min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+<!--页面内容-->
+{% block page %}
+
+<body class="gray-bg">
+
+  <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>路况分析</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <!-- <i class="fa fa-chevron-up"></i> -->
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="height:550px" id="roadcondition"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <!--js-->
+    {% block script %}
+    <!-- 全局js -->
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- ECharts -->
+    <script src="/static/js/plugins/echarts/echarts.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="/static/js/content.js?v=1.0.0"></script>
+
+    <!-- ECharts demo data -->
+    <script src="/static/js/demo/echarts-demo.js"></script>
+
+    <!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=vWzgRPT6sSe2fSVK3xMIDZhoWF8oEQdE"></script>
+    <!-- 引入百度地图扩展 -->
+    <script src="/static/js/plugins/echarts/bmap.min.js"></script>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/library/TrafficControl/1.2/src/TrafficControl_min.js"></script>
+    <script type="text/javascript">
+
+        var map = new BMap.Map("roadcondition",{minZoom:9,maxZoom:14}); // 创建Map实例,设置地图允许的最小/大级别
+
+	      map.enableScrollWheelZoom(true);
+
+        map.centerAndZoom("贵阳", 9);
+
+        function getBoundary(){
+      		var bdary = new BMap.Boundary();
+      		bdary.get("贵阳市", function(rs){       //获取行政区域
+      			map.clearOverlays();        //清除地图覆盖物
+      			var count = rs.boundaries.length; //行政区域的点有多少个
+      			if (count === 0) {
+      				alert('未能获取当前输入行政区域');
+      				return ;
+      			}
+            var pointArray = [];
+      			for (var i = 0; i < count; i++) {
+      				var ply = new BMap.Polyline(rs.boundaries[i], {strokeWeight: 2, strokeColor: "#ff0000"}); //建立多边形覆盖物
+      				map.addOverlay(ply);  //添加覆盖物
+      				pointArray = pointArray.concat(ply.getPath());
+      			}
+      			map.setViewport(pointArray);    //调整视野
+
+      		});
+      	}
+
+        getBoundary();
+
+        var ctrl = new BMapLib.TrafficControl({
+            showPanel: false //是否显示路况提示面板
+        });
+        map.addControl(ctrl);
+        // ctrl.setAnchor(BMAP_ANCHOR_BOTTOM_RIGHT);
+    </script>
+
+    {% endblock %}

@@ -1,0 +1,140 @@
+{% extends "./inc/base.html" %}
+
+<!--页面内容-->
+{% block page %}
+
+<body class="gray-bg">
+
+  <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>道路拥堵排行</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <!-- <i class="fa fa-chevron-up"></i> -->
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="height:550px" id="road-congestion"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <!--js-->
+    {% block script %}
+    <!-- 全局js -->
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- ECharts -->
+    <script src="/static/js/plugins/echarts/echarts.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="/static/js/content.js?v=1.0.0"></script>
+
+    <!-- ECharts demo data -->
+    <script src="/static/js/demo/echarts-demo.js"></script>
+
+    <!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=vWzgRPT6sSe2fSVK3xMIDZhoWF8oEQdE"></script>
+    <!-- 引入百度地图扩展 -->
+    <script src="/static/js/plugins/echarts/bmap.min.js"></script>
+
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('road-congestion'));
+      var uploadedDataURL = "/static/json/data-1477626617822-SJMboHgel.txt";
+
+      function convertData(sourceData) {
+          return [].concat.apply([], $.map(sourceData, function(busLine, index) {
+              var prevPoint = null;
+              var points = [];
+              var value = busLine.shift();
+              for (var i = 0; i < busLine.length; i += 2) {
+                  var point = [busLine[i], busLine[i + 1]];
+                  if (i > 0) {
+                      point = [
+                          prevPoint[0] + point[0],
+                          prevPoint[1] + point[1]
+                      ];
+                  }
+                  prevPoint = point;
+
+                  points.push([(point[0] / 1e5)-14.139, (point[1] / 1e5)-4.120]);
+              }
+              return {
+                  value: value,
+                  coords: points
+              };
+          }));
+      }
+
+      var option = {
+          bmap: {
+              roam: true
+          },
+          visualMap: {
+              type: "piecewise",
+              left: 'right',
+              /*            pieces: [
+                      {min: 15}, // 不指定 max，表示 max 为无限大（Infinity）。
+                      {min: 12, max: 15},
+                      {min: 9, max: 12},
+                      {min: 6, max: 9},
+                      {min: 3, max: 6},
+                      {max: 3}     // 不指定 min，表示 min 为无限大（-Infinity）。
+                  ],*/
+              min: 0,
+              max: 20,
+              splitNumber: 5,
+              maxOpen: true,
+              color: ['red', 'yellow', 'green']
+          },
+          tooltip: {
+              formatter: function(params, ticket, callback) {
+                  return "拥堵指数:" + params.value;
+              },
+              trigger: 'item'
+          },
+          series: [{
+              type: 'lines',
+              coordinateSystem: 'bmap',
+              polyline: true,
+              lineStyle: {
+                  normal: {
+                      opacity: 1,
+                      width: 4
+                  },
+                  emphasis: {
+                      width: 6
+                  }
+              },
+              effect: {
+                  show: true,
+                  symbolSize: 2,
+                  color: "white"
+              }
+          }]
+      };
+
+      $.getJSON(uploadedDataURL, function(rawData) {
+          option.series[0].data = convertData(rawData);
+          myChart.setOption(option);
+          // console.log(option);
+          //获取echart中使用的bmap实例
+          var map = myChart.getModel().getComponent('bmap').getBMap();
+          map.disableDoubleClickZoom();
+          map.centerAndZoom("贵阳", 13);
+
+      });
+    </script>
+
+    {% endblock %}

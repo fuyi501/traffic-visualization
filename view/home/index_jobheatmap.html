@@ -1,0 +1,101 @@
+{% extends "./inc/base.html" %}
+
+<!--页面内容-->
+{% block page %}
+
+<body class="gray-bg">
+
+  <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>工作热力分析</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <!-- <i class="fa fa-chevron-up"></i> -->
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="height:550px" id="juzhu"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <!--js-->
+    {% block script %}
+    <!-- 全局js -->
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- ECharts -->
+    <script src="/static/js/plugins/echarts/echarts.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="/static/js/content.js?v=1.0.0"></script>
+
+    <!-- ECharts demo data -->
+    <script src="/static/js/demo/echarts-demo.js"></script>
+
+    <!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=vWzgRPT6sSe2fSVK3xMIDZhoWF8oEQdE"></script>
+    <!-- 引入百度地图扩展 -->
+    <script src="/static/js/plugins/echarts/bmap.min.js"></script>
+
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('juzhu'));
+
+        var uploadedDataURL = "/static/json/data-1464248983149-HJ1jcQNX.json";
+        myChart.showLoading();
+        $.getJSON('/index/jobheat', function (data) {
+        // $.getJSON(uploadedDataURL, function (data) {
+
+          var points = [].concat.apply([], data.map(function (track) {
+              return track.map(function (seg) {
+                  return seg.coord.concat([1]);
+              });
+          }));
+
+          // 指定图表的配置项和数据
+          var option = {
+            animation: false,
+            bmap: {
+                center: [106.6331, 26.6565],
+                zoom: 14,
+                roam: true
+            },
+            visualMap: {
+                show: false,
+                top: 'top',
+                min: 0,
+                max: 5,
+                seriesIndex: 0,
+                calculable: true,
+                inRange: {
+                    color: ['blue', 'blue', 'green', 'yellow', 'red']
+                }
+            },
+            series: [{
+                type: 'heatmap',
+                coordinateSystem: 'bmap',
+                data: points,
+                pointSize: 5,
+                blurSize: 6
+            }]
+        };
+          myChart.hideLoading();
+          myChart.setOption(option);
+
+          var bmap = myChart.getModel().getComponent('bmap').getBMap();
+          bmap.addControl(new BMap.MapTypeControl());
+        });
+    </script>
+
+    {% endblock %}

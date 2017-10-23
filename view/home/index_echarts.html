@@ -1,0 +1,200 @@
+{% extends "./inc/base.html" %}
+
+<!--页面内容-->
+{% block page %}
+
+<body class="gray-bg">
+
+  <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>城区人口占比</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <!-- <i class="fa fa-chevron-up"></i> -->
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="height:550px" id="juzhu-map-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>城区人口占比</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <!-- <i class="fa fa-chevron-up"></i> -->
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="height:250px" id="juzhu-map-chart2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>城区人口占比</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <!-- <i class="fa fa-chevron-up"></i> -->
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="height:250px" id="juzhu-map-chart2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <!--js-->
+    {% block script %}
+    <!-- 全局js -->
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- ECharts -->
+    <script src="/static/js/plugins/echarts/echarts-all.js"></script>
+
+    <!-- 自定义js -->
+    <script src="/static/js/content.js?v=1.0.0"></script>
+
+    <!-- ECharts demo data -->
+    <script src="/static/js/demo/echarts-demo.js"></script>
+
+    <script type="text/javascript" src='http://webapi.amap.com/maps?v=1.4.0&key=d9b03597f5dbcc18ce5e006e24987722'></script>
+    <!-- UI组件库 1.0 -->
+    <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+    <script type="text/javascript">
+    //创建地图
+    var map = new AMap.Map('juzhu-map-chart', {
+        resizeEnable: false,
+        zoom: 8,
+        center: [106.669,26.615]
+    });
+
+    function initPage(DistrictCluster, PointSimplifier, $) {
+
+        var pointSimplifierIns = new PointSimplifier({
+            map: map, //所属的地图实例
+            autoSetFitView: false, //禁止自动更新地图视野
+            zIndex: 110,
+            //返回数据项中的经纬度信息
+            getPosition: function(item) {
+
+                if (!item) {
+                    return null;
+                }
+
+                return item;
+
+                // var parts = item.split(',');
+                //
+                // //返回经纬度
+                // return [parseFloat(parts[0]), parseFloat(parts[1])];
+            },
+            //返回鼠标Hover时显示的Title内容
+            getHoverTitle: function(dataItem, idx) {
+                return idx + ': ' + dataItem;
+            },
+            renderOptions: {
+                //点的样式
+                pointStyle: {
+                    width: 6,
+                    height: 6,
+                    fillStyle:'rgba(153, 0, 153, 0.38)' //填充色
+                },
+                //鼠标hover时的title信息
+                hoverTitleStyle: {
+                    position: 'top'
+                }
+            }
+        });
+
+        var distCluster = new DistrictCluster({
+            zIndex: 100,
+            map: map, //所属的地图实例
+             //只显示贵州省
+            topAdcodes:[520000],
+            autoSetFitView: false,
+
+            getPosition: function(item) {
+
+                if (!item) {
+                    return null;
+                }
+
+                return item;
+
+                // var parts = item.split(',');
+                //
+                // //返回经纬度
+                // return [parseFloat(parts[0]), parseFloat(parts[1])];
+            }
+        });
+
+        window.distCluster = distCluster;
+
+        function refresh() {
+
+            var zoom = map.getZoom();
+
+            //获取 pointStyle
+            var pointStyle = pointSimplifierIns.getRenderOptions().pointStyle;
+
+            //根据当前zoom调整点的尺寸
+            pointStyle.width = pointStyle.height = 2 * Math.pow(1.2, map.getZoom() - 3);
+
+        }
+
+        map.on('zoomend', function() {
+            refresh();
+        });
+
+        refresh();
+
+        // $('<div id="loadingTip">加载数据，请稍候...</div>').appendTo(document.body);
+        // $.get('http://a.amap.com/amap-ui/static/data/10w.txt', function(csv) {
+        $.get('/index/renkou', function(csv) {
+
+            // $('#loadingTip').remove();
+            // alert(csv[0]['name'])
+            var data = []
+            for(var i=0;i<csv.length;i++){
+              data.push(
+                csv[i]['loc']['coordinates']
+              );
+            }
+            // var data = csv.split('\n');
+            //
+            // alert(data[0])
+            //
+            distCluster.setData(data);
+            //
+            pointSimplifierIns.setData(data);
+        });
+    }
+
+    //加载相关组件
+    AMapUI.load(['ui/geo/DistrictCluster', 'ui/misc/PointSimplifier', 'lib/$'], function(DistrictCluster, PointSimplifier, $) {
+
+        //启动页面
+        initPage(DistrictCluster, PointSimplifier, $);
+    });
+    </script>
+
+    {% endblock %}

@@ -1,0 +1,107 @@
+{% extends "./inc/base.html" %}
+
+<!--页面内容-->
+{% block page %}
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+
+    <div id="wrapper">
+        <!--左侧导航开始-->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="nav-close"><i class="fa fa-times-circle"></i>
+            </div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                                    <span class="block m-t-xs" style="font-size:18px;">
+                                        <i class="fa fa-area-chart"></i>
+                                        <strong class="font-bold">贵阳交通出行系统</strong>
+                                    </span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="logo-element">交通出行系统</div>
+                    </li>
+                    <!-- <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                        <span class="ng-scope">分类</span>
+                    </li> -->
+                    <li>
+                        <a class="J_menuItem" href="index/liveheatmap">
+                            <i class="fa fa-home"></i>
+                            <span class="nav-label">首页</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa fa-bar-chart-o"></i>
+                            <span class="nav-label">人口分布情况</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="/index/liveheatmap">居住热力分析</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="/index/jobheatmap">工作热力分析</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="/index/lifeheatmap">生活热力分析</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="/index/echarts">城区人口占比</a>
+                            </li>
+                            <!-- <li>
+                                <a class="J_menuItem" href="/index/graph">区域人口变化</a>
+                            </li> -->
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">交通出行情况</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a class="J_menuItem" href="/index/roadcondition">路况分析</a>
+                            </li>
+                            <li><a class="J_menuItem" href="/index/roadcongestion">道路拥堵排行</a>
+                            </li>
+                            <li><a class="J_menuItem" href="/index/hottravelsites">热门出行站点</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                </ul>
+            </div>
+        </nav>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <!-- <div class="row border-bottom">
+
+            </div> -->
+            <div class="row J_mainContent" id="content-main">
+                <iframe id="J_iframe" width="100%" height="100%" src="/index/liveheatmap" frameborder="0" data-id="index_v1.html" seamless></iframe>
+            </div>
+        </div>
+        <!--右侧部分结束-->
+    </div>
+
+    {% endblock %}
+
+    <!--js-->
+    {% block script %}
+    <!-- 全局js -->
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/static/js/plugins/layer/layer.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="/static/js/hAdmin.js?v=4.1.0"></script>
+    <script type="text/javascript" src="/static/js/index.js"></script>
+
+    <!-- 第三方插件 -->
+    <script src="/static/js/plugins/pace/pace.min.js"></script>
+    {% endblock %}

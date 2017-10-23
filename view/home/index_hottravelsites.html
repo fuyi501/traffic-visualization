@@ -1,0 +1,251 @@
+{% extends "./inc/base.html" %}
+
+<!--页面内容-->
+{% block page %}
+
+<body class="gray-bg">
+
+  <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>热门出行站点</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <!-- <i class="fa fa-chevron-up"></i> -->
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="height:550px" id="hot-sites"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <!--js-->
+    {% block script %}
+    <!-- 全局js -->
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- ECharts -->
+    <script src="/static/js/plugins/echarts/echarts.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="/static/js/content.js?v=1.0.0"></script>
+
+    <!-- ECharts demo data -->
+    <script src="/static/js/demo/echarts-demo.js"></script>
+
+    <!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=vWzgRPT6sSe2fSVK3xMIDZhoWF8oEQdE"></script>
+    <!-- 引入百度地图扩展 -->
+    <script src="/static/js/plugins/echarts/bmap.min.js"></script>
+
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('hot-sites'));
+      var uploadedDataURL = "/static/json/data-1479371994220-HJGJaksZx.txt";
+
+      function convertData(sourceData) {
+          return [].concat.apply([], $.map(sourceData, function(stop, index) {
+              return {
+                  name: stop.stopName,
+                  value: [stop.jingdu, stop.weidu, parseInt(Math.random() * 100)]
+              };
+          }));
+      }
+
+      var option = {
+          bmap: {
+              roam: true,
+              mapStyle: {
+                  'styleJson': [{
+                      'featureType': 'water',
+                      'elementType': 'all',
+                      'stylers': {
+                          'color': '#031628'
+                      }
+                  }, {
+                      'featureType': 'land',
+                      'elementType': 'geometry',
+                      'stylers': {
+                          'color': '#000102'
+                      }
+                  }, {
+                      'featureType': 'highway',
+                      'elementType': 'all',
+                      'stylers': {
+                          'visibility': 'off'
+                      }
+                  }, {
+                      'featureType': 'arterial',
+                      'elementType': 'geometry.fill',
+                      'stylers': {
+                          'color': '#000000'
+                      }
+                  }, {
+                      'featureType': 'arterial',
+                      'elementType': 'geometry.stroke',
+                      'stylers': {
+                          'color': '#0b3d51'
+                      }
+                  }, {
+                      'featureType': 'local',
+                      'elementType': 'geometry',
+                      'stylers': {
+                          'color': '#000000'
+                      }
+                  }, {
+                      'featureType': 'railway',
+                      'elementType': 'geometry.fill',
+                      'stylers': {
+                          'color': '#000000'
+                      }
+                  }, {
+                      'featureType': 'railway',
+                      'elementType': 'geometry.stroke',
+                      'stylers': {
+                          'color': '#08304b'
+                      }
+                  }, {
+                      'featureType': 'subway',
+                      'elementType': 'geometry',
+                      'stylers': {
+                          'lightness': -70
+                      }
+                  }, {
+                      'featureType': 'building',
+                      'elementType': 'geometry.fill',
+                      'stylers': {
+                          'color': '#000000'
+                      }
+                  }, {
+                      'featureType': 'all',
+                      'elementType': 'labels.text.fill',
+                      'stylers': {
+                          'color': '#857f7f'
+                      }
+                  }, {
+                      'featureType': 'all',
+                      'elementType': 'labels.text.stroke',
+                      'stylers': {
+                          'color': '#000000'
+                      }
+                  }, {
+                      'featureType': 'building',
+                      'elementType': 'geometry',
+                      'stylers': {
+                          'color': '#022338'
+                      }
+                  }, {
+                      'featureType': 'green',
+                      'elementType': 'geometry',
+                      'stylers': {
+                          'color': '#062032'
+                      }
+                  }, {
+                      'featureType': 'boundary',
+                      'elementType': 'all',
+                      'stylers': {
+                          'color': '#465b6c'
+                      }
+                  }, {
+                      'featureType': 'manmade',
+                      'elementType': 'all',
+                      'stylers': {
+                          'color': '#022338'
+                      }
+                  }, {
+                      'featureType': 'label',
+                      'elementType': 'all',
+                      'stylers': {
+                          'visibility': 'off'
+                      }
+                  }]
+              }
+          },
+          tooltip: {
+              trigger: 'item'
+          },
+          legend: {
+              orient: 'vertical',
+              y: 'bottom',
+              x: 'right',
+              data: ['热门换乘站点'],
+              textStyle: {
+                  color: '#fff'
+              }
+          },
+          series: [{
+              name: '热门换乘站点',
+              type: 'scatter',
+              coordinateSystem: 'bmap',
+              symbolSize: function(val) {
+                  return val[2] / 10;
+              },
+              label: {
+                  normal: {
+                      formatter: '{b}',
+                      position: 'right',
+                      show: false
+                  },
+                  emphasis: {
+                      show: true
+                  }
+              },
+              itemStyle: {
+                  normal: {
+                      color: '#ddb926'
+                  }
+              }
+          }, {
+              name: 'Top 10',
+              type: 'effectScatter',
+              coordinateSystem: 'bmap',
+              symbolSize: function(val) {
+                  return val[2] / 10;
+              },
+              showEffectOn: 'render',
+              rippleEffect: {
+                  brushType: 'stroke'
+              },
+              hoverAnimation: true,
+              label: {
+                  normal: {
+                      formatter: '{b}',
+                      position: 'right',
+                      show: true
+                  }
+              },
+              itemStyle: {
+                  normal: {
+                      color: '#f4e925',
+                      shadowBlur: 10,
+                      shadowColor: '#333'
+                  }
+              },
+              zlevel: 1
+          }]
+      };
+
+      $.getJSON('/index/hotstop', function(rawData) {
+      // $.getJSON(uploadedDataURL, function(rawData) {
+          option.series[0].data = convertData(rawData);
+          myChart.setOption(option);
+          // console.log(option);
+          //获取echart中使用的bmap实例
+          var map = myChart.getModel().getComponent('bmap').getBMap();
+          map.disableDoubleClickZoom();
+          map.centerAndZoom("贵阳", 13);
+
+      });
+    </script>
+
+    {% endblock %}
