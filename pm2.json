@@ -2,7 +2,7 @@
   "apps": [{
     "name": "mzitu-thinkjs",
     "script": "www/production.js",
-    "cwd": "/home/fuyi/Desktop/mzitu-thinkjs",
+    "cwd": "/home/ubuntu/thinkjs-jiaotong",
     "exec_mode": "cluster",
     "instances": 0,
     "max_memory_restart": "1G",
@@ -10,7 +10,7 @@
     "node_args": [],
     "args": [],
     "env": {
-      
+
     }
   }]
 }

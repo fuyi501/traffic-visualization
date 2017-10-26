@@ -25,7 +25,7 @@ export default class extends Base {
     async lifeheatAction() {
         this.assign("title", "生活热力分析") //给title赋值为 Hello
 
-        let data = await this.model('tmp_o_mc_10').where({time:{'>':'2016-09-01 19:00:00','<':'2016-09-01 23:59:59'}}).limit(50000).select();
+        let data = await this.model('tmp_o_mc_10').where({time:{'>':'2016-09-01 00:00:00','<':'2016-09-01 00:26:59'}}).limit(50000).select();
         // console.log(data)
 
         let livedata = [];
@@ -45,7 +45,7 @@ export default class extends Base {
     async liveheatAction() {
         this.assign("title", "居住热力分析") //给title赋值为 Hello
 
-        let data = await this.model('tmp_o_mc_10').where({time:{'>':'2016-09-01 00:00:00','<':'2016-09-01 06:00:00'}}).limit(50000).select();
+        let data = await this.model('tmp_o_mc_10').where({time:{'>':'2016-09-01 00:00:00','<':'2016-09-01 00:30:00'}}).limit(50000).select();
         // console.log(data)
 
         let livedata = [];
@@ -65,7 +65,7 @@ export default class extends Base {
     async jobheatAction() {
         this.assign("title", "工作热力分析") //给title赋值为 Hello
 
-        let data = await this.model('tmp_o_mc_10').where({time:{'>':'2016-09-01 09:00:00','<':'2016-09-01 18:00:00'}}).limit(50000).select();
+        let data = await this.model('tmp_o_mc_10').where({time:{'>':'2016-09-01 00:10:00','<':'2016-09-01 00:30:00'}}).limit(50000).select();
         // console.log(data)
 
         let livedata = [];
