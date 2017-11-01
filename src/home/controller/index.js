@@ -7,6 +7,28 @@ export default class extends Base {
      * index action
      * @return {Promise} []
      */
+
+     async loginAction(){
+      console.log('进来了')
+
+      if (this.isPost()){//判断是否发送信息给后台了，post数据过来.注意：isPost中的P是大写，js是对大小写敏感的。
+
+        let username = this.post('username');//获取用户名给username变量
+        let password = this.post('password');
+
+        let data = await this.model('user').where({username:username,password:password}).find();//到数据库中去查找看是否有数据（用户名密码同时相符）
+
+        if (think.isEmpty(data)){//这里我直接用isEmpty居然不能用。查了下资料需要用think.isEmpty()
+            return this.error(403,'账号密码错误！请重新填写');//登录不成功，返回错误信息。
+        }else{
+            this.session('userinfo',data);
+            return this.redirect('index');//登录成功将用户信息写入session，返回到user首页。
+        }
+      }
+      return this.display();
+
+    }
+    
     async indexAction() {
         this.assign("title", "首页") //给title赋值为 Hello
 
