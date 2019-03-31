@@ -18,26 +18,80 @@
                                 <span class="clear">
                                     <span class="block m-t-xs" style="font-size:18px;">
                                         <i class="fa fa-area-chart"></i>
-                                        <strong class="font-bold">贵阳交通出行系统</strong>
+                                        <strong class="font-bold">轨迹可视化系统</strong>
                                     </span>
                                 </span>
                             </a>
                         </div>
-                        <div class="logo-element">交通出行系统</div>
+                        <div class="logo-element">出租车轨迹可视化系统</div>
                     </li>
                     <!-- <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                         <span class="ng-scope">分类</span>
                     </li> -->
                     <li>
-                        <a class="J_menuItem" href="index/liveheatmap">
+                        <a class="J_menuItem" href="index/yasuoguiji">
                             <i class="fa fa-home"></i>
                             <span class="nav-label">首页</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
+                            <i class="fa fa-taxi"></i>
+                            <span class="nav-label">出租车轨迹</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="/index/danguiji">单点轨迹</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="/index/duoguiji">多点轨迹</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="index/spoint">
+                            <i class="fa fa-map-marker"></i>
+                            <span class="nav-label">出租车停留点</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="index/yasuoguiji">
+                            <i class="fa fa-spinner"></i>
+                            <span class="nav-label">压缩轨迹</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-map"></i>
+                            <span class="nav-label">交通热力分析</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a class="J_menuItem" href="/index/hotfenxi">区域热力图分析</a>
+                            </li>
+                            <li>
+                                <a class="J_menuItem" href="/index/newroadheat">道路热力分析</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="index/newhotsite">
+                            <i class="fa fa-sitemap"></i>
+                            <span class="nav-label">热门出行站点</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="index/roadcondition">
+                            <i class="fa fa-road"></i>
+                            <span class="nav-label">路况分析</span>
+                        </a>
+                    </li>
+                    <!-- <li>
+                        <a href="#">
                             <i class="fa fa fa-bar-chart-o"></i>
-                            <span class="nav-label">人口分布情况</span>
+                            <span class="nav-label">出租车轨迹</span>
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
@@ -53,9 +107,7 @@
                             <li>
                                 <a class="J_menuItem" href="/index/echarts">城区人口占比</a>
                             </li>
-                            <!-- <li>
-                                <a class="J_menuItem" href="/index/graph">区域人口变化</a>
-                            </li> -->
+                           
                         </ul>
                     </li>
                     <li>
@@ -68,7 +120,7 @@
                             <li><a class="J_menuItem" href="/index/hottravelsites">热门出行站点</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
 
 
                 </ul>
@@ -81,7 +133,7 @@
 
             </div> -->
             <div class="row J_mainContent" id="content-main">
-                <iframe id="J_iframe" width="100%" height="100%" src="/index/liveheatmap" frameborder="0" data-id="index_v1.html" seamless></iframe>
+                <iframe id="J_iframe" width="100%" height="100%" src="/index/yasuoguiji" frameborder="0" data-id="index_v1.html" seamless></iframe>
             </div>
         </div>
         <!--右侧部分结束-->

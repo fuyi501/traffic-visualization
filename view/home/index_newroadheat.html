@@ -1,0 +1,255 @@
+{% extends "./inc/base.html" %}
+
+<!--页面内容-->
+{% block page %}
+
+<body class="gray-bg">
+
+  <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <!-- <div class="ibox-title">
+                        <h5>热门出行站点</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                            </a>
+                        </div>
+                    </div> -->
+                    <!-- <div class="ibox-content"> -->
+                        <div style="height:550px" id="newroadhot"></div>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <!--js-->
+    {% block script %}
+    <!-- 全局js -->
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- ECharts -->
+    <script src="/static/js/plugins/echarts/echarts.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="/static/js/content.js?v=1.0.0"></script>
+
+    <!-- ECharts demo data -->
+    <script src="/static/js/demo/echarts-demo.js"></script>
+
+    <!--引入百度地图的jssdk，这里需要使用你在百度地图开发者平台申请的 ak-->
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=vWzgRPT6sSe2fSVK3xMIDZhoWF8oEQdE"></script>
+    <!-- 引入百度地图扩展 -->
+    <script src="/static/js/plugins/echarts/bmap.min.js"></script>
+
+    <script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('newroadhot'));
+
+        myChart.showLoading();
+        $.getJSON('/index/newroadhot', function (data) {
+    
+
+        //    alert(data[0])
+           var option = {
+                animation: false,
+                bmap: {
+                    center: [104.072619,30.663154],
+                    zoom: 12,
+                    roam: true,
+                    mapStyle:{
+                        styleJson: [
+                            {
+                                        'featureType': 'land',    
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                                'color': '#081734'
+                                        }
+                            },
+                            {
+                                        'featureType': 'building',   
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                                'color': '#04406F'
+                                        }
+                            },
+                            {
+                                        'featureType': 'building',   
+                                        'elementType': 'labels',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'highway',     
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                        'color': '#015B99'
+                                        }
+                            },
+                            {
+                                        'featureType': 'highway',    
+                                        'elementType': 'labels',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'arterial',   
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                        'color':'#003051'
+                                        }
+                            },
+                            {
+                                        'featureType': 'arterial',
+                                        'elementType': 'labels',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'green',
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'water',
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                                'color': '#044161'
+                                        }
+                            },
+                            {
+                                        'featureType': 'subway',    
+                                        'elementType': 'geometry.stroke',
+                                        'stylers': {
+                                        'color': '#003051'
+                                        }
+                            },
+                            {
+                                        'featureType': 'subway',
+                                        'elementType': 'labels',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'railway',
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'railway',
+                                        'elementType': 'labels',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'all',     
+                                        'elementType': 'labels.text.stroke',
+                                        'stylers': {
+                                                'color': '#313131'
+                                        }
+                            },
+                            {
+                                        'featureType': 'all',     
+                                        'elementType': 'labels.text.fill',
+                                        'stylers': {
+                                                'color': '#FFFFFF'
+                                        }
+                            },
+                            {
+                                        'featureType': 'manmade',   
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'manmade',
+                                        'elementType': 'labels',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'local',
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'local',
+                                        'elementType': 'labels',
+                                        'stylers': {
+                                        'visibility': 'off'
+                                        }
+                            },
+                            {
+                                        'featureType': 'subway',
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                                'lightness': -65
+                                        }
+                            },
+                            {
+                                        'featureType': 'railway',
+                                        'elementType': 'all',
+                                        'stylers': {
+                                                'lightness': -40
+                                        }
+                            },
+                            {
+                                        'featureType': 'boundary',
+                                        'elementType': 'geometry',
+                                        'stylers': {
+                                                'color': '#8b8787',
+                                                'weight': '1',
+                                                'lightness': -29
+                                        }
+                            }
+                        ]
+                    }
+                
+                },
+                visualMap: {
+                    show: false,
+                    top: 'top',
+                    min: 0,
+                    max: 5,
+                    seriesIndex: 0,
+                    calculable: true,
+                    inRange: {
+                        color: ['blue', 'blue', 'green', 'yellow', 'red']
+                    }
+                },
+                series: [{
+                    type: 'heatmap',
+                    coordinateSystem: 'bmap',
+                    data: data,
+                    pointSize: 5,
+                    blurSize: 6
+                }]
+        }
+      
+            myChart.hideLoading();
+            myChart.setOption(option);
+
+            var bmap = myChart.getModel().getComponent('bmap').getBMap();
+            bmap.addControl(new BMap.MapTypeControl());
+        });
+    </script>
+
+    {% endblock %}

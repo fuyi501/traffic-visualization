@@ -15,17 +15,16 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
-                    <div class="ibox-title">
+                    <!-- <div class="ibox-title">
                         <h5>路况分析</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
-                                <!-- <i class="fa fa-chevron-up"></i> -->
                             </a>
                         </div>
                     </div>
-                    <div class="ibox-content">
+                    <div class="ibox-content"> -->
                         <div style="height:550px" id="roadcondition"></div>
-                    </div>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>
@@ -58,13 +57,14 @@
 
         var map = new BMap.Map("roadcondition",{minZoom:9,maxZoom:14}); // 创建Map实例,设置地图允许的最小/大级别
 
-	      map.enableScrollWheelZoom(true);
+          map.enableScrollWheelZoom(true);
+          map.setMapStyle({style:'grayscale'});
 
-        map.centerAndZoom("贵阳", 9);
+        map.centerAndZoom("成都", 9);
 
         function getBoundary(){
       		var bdary = new BMap.Boundary();
-      		bdary.get("贵阳市", function(rs){       //获取行政区域
+      		bdary.get("成都市", function(rs){       //获取行政区域
       			map.clearOverlays();        //清除地图覆盖物
       			var count = rs.boundaries.length; //行政区域的点有多少个
       			if (count === 0) {

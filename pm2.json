@@ -1,11 +1,11 @@
 {
   "apps": [{
-    "name": "mzitu-thinkjs",
-    "script": "www/production.js",
-    "cwd": "/home/ubuntu/thinkjs-jiaotong",
+    "name": "traffic-visual-jiaotong-web",
+    "script": "www/development.js",
+    "cwd": "/root/traffic-visual-jiaotong-web",
     "exec_mode": "cluster",
     "instances": 0,
-    "max_memory_restart": "1G",
+    "max_memory_restart": "2G",
     "autorestart": true,
     "node_args": [],
     "args": [],
